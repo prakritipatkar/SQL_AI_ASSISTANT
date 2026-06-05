@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI SQL Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="background-blur"></div>
+  
+  <header class="navbar">
+    <div class="navbar-content">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">SQL Assistant</span>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Spill The Query</h1>
+        <p class="hero-subtitle">Ask in Plain English & convert natural language to SQL instantly</p>
+      </div>
+    </section>
+
+    <!-- Database Selector -->
+    <section class="db-section card">
+      <div class="db-header">
+        <h2>📊 Database</h2>
+        <div class="db-actions">
+          <button class="btn btn-secondary" id="upload-trigger">
+            <span>+ Add Database</span>
+          </button>
+          <input type="file" id="db-upload" accept=".db,.sqlite,.sqlite3,.csv,.xlsx,.xls" hidden />
+        </div>
+      </div>
+      
+      <!-- Database List -->
+      <div class="db-list-container">
+        <div id="db-list" class="db-list"></div>
+      </div>
+
+      <div class="db-info">
+        <p class="db-hint">💡 Supports: SQLite (.db, .sqlite), CSV (.csv), Excel (.xlsx, .xls)</p>
+      </div>
+    </section>
+
+    <!-- Query Section -->
+    <section class="query-section card fade-in">
+      <form id="ask-form" class="query-form">
+        <div class="input-wrapper">
+          <input
+            id="question"
+            type="text"
+            class="query-input"
+            placeholder="e.g. show top 5 customers by revenue"
+            autocomplete="off"
+            required
+          />
+          <button type="submit" class="btn btn-primary" id="ask-btn">
+            <span class="btn-text">Generate SQL</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Quick Examples -->
+      <div class="examples-section">
+        <p class="examples-label">Quick examples:</p>
+        <div class="examples-grid">
+          <button class="example-chip" type="button">show top 5 customers by revenue</button>
+          <button class="example-chip" type="button">list all orders in Mumbai</button>
+          <button class="example-chip" type="button">total sales per product</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Error Message -->
+    <div id="error" class="alert alert-error hidden fade-in"></div>
+
+    <!-- Output Section -->
+    <section id="output" class="output-section hidden fade-in">
+      <!-- Generated SQL -->
+      <div class="output-card sql-card">
+        <div class="output-header">
+          <h3>Generated SQL</h3>
+          <button class="btn btn-icon" id="copy-sql" title="Copy SQL">
+            📋
+          </button>
+        </div>
+        <pre id="sql" class="sql-output"></pre>
+      </div>
+
+      <!-- Results Table -->
+      <div class="output-card results-card">
+        <div class="output-header">
+          <h3>Query Results</h3>
+          <span class="result-count" id="result-count"></span>
+        </div>
+        <div id="result-wrap" class="results-table-wrap"></div>
+      </div>
+    </section>
+
+    <!-- Schema Section -->
+    <section class="schema-section">
+      <details class="schema-details">
+        <summary class="schema-summary">
+          <span class="schema-icon">📋</span>
+          <span>Database Schema</span>
+          <span class="schema-arrow">›</span>
+        </summary>
+        <pre class="schema-content"><code id="schema-content">{{ schema }}</code></pre>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>AI SQL Assistant • Built with Gemini & SQLite</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
